@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <style>
+            p.poke{
+          
+                font-size: 40px;
+                margin-bottom: -30px;
+                font-family:cursive;
+            }
+            p.choose{
+                line-height: ;
+                font-size: 30px;
+                margin-bottom: -10px;
+                font-family:cursive;
+            }
+            p.jenis{
+                font-size: 20px;
+                font-family:cursive;
+            }
+            img.foto {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                
+            }
+            p.out{
+                font-size: 30px;
+                font-family:cursive;
+            }
+
+
+        </style>
+        
+        <title>Image Classification</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            const Url = 'http://127.0.0.1:5000/predict'
+            
+            window.addEventListener('load', function() {
+            document.querySelector('input[type="file"]').addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    var img = document.getElementById('imageData');  
+                    img.src = URL.createObjectURL(this.files[0]); 
+
+                    var data = new FormData()
+                    data.append('file', this.files[0])
+
+                    fetch(Url, {
+                        method: 'POST',
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(response => document.getElementById('classText').innerHTML = response.class_name)
+                    .catch(error => console.log(error))
+                }
+            });
+            });
+        </script>
+    </head>
+
+    <body style="background-color: blanchedalmond;">
+        <div style="text-align: center;">
+            <img src="poke.png" class="logo" width="600" height="300">
+        </div>
+        <p class="poke" style="text-align: center;">Who Is That Pokemon !!!</p>
+        <p class="choose" style="text-align: center;">Choose your Pokemon</p>
+        <p class="jenis" style="text-align: center;">Pikachu/Charizard/Snorlax</p>
+        <div style="text-align: center;">
+            <input class="inn" type='file'/>
+            <br><br>
+            <img class="foto" id="imageData" src="#" alt="your image" height=300 class="center" >
+            <br><br>
+            <p class="out" id="classText"></p>
+        </div>
+        
+       
+    </body>
+</html>
